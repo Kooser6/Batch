@@ -14,9 +14,6 @@ final class Minimax implements Algorithm
     /** @var int $depth The search depth. */
     private $depth;
 
-    /** @var bool $alphaBetaPruning The alpha beta pruning option. */
-    private $alphaBetaPruning;
-
     /**
      * Construct a new minimax algorithm.
      *
@@ -25,11 +22,10 @@ final class Minimax implements Algorithm
      *
      * @return void Returns nothing.
      */
-    public function __construct(Evaluator $evaluator, int $depth = 3, $alphaBetaPruning = true)
+    public function __construct(Evaluator $evaluator, int $depth = 3)
     {
         $this->setEvaluator($evaluator);
         $this->setDepth($depth);
-        $this->setAlphaBetaPruning($alphaBetaPruning);
     }
 
     /**
@@ -60,19 +56,6 @@ final class Minimax implements Algorithm
     }
 
     /**
-     * Set the alpha beta pruning option.
-     *
-     * @param bool $alphaBetaPruning The alpha beta pruning option.
-     *
-     * @return Algorithm Returns the minimax algorithm.
-     */
-    public function setDepth(bool $alphaBetaRuning): Algorithm
-    {
-        $this->alphaBetaPruning = $alphaBetaPruning;
-        return $this;
-    }
-
-    /**
      * Find the best move.
      *
      * @param Position $position The position to use.
@@ -81,13 +64,13 @@ final class Minimax implements Algorithm
      */
     public function bestMove(Position $position): ?array
     {
-        $maxScore = 999999999;
+        $maxScore = 99999;
         $bestValue = $position->currentPlayer() === 1 ? $maxScore : -$maxScore;
         $bestMove = null;
         $avaliableMoves = $position->getMoves();
         foreach ($avaliableMoves as $move) {
             $position->move($move);
-            $newValue = $this->search($position, $this->depth - 1);
+            $newValue = $this->search($position, -100000, 100000, $this->depth - 1);
             if ($position->currentPlayer() === 1 ? $newValue < $bestValue : $newValue > $bestValue) {
                 $bestMove = $move;
                 $bestValue = $newValue;
@@ -101,28 +84,39 @@ final class Minimax implements Algorithm
      * Search the position for a minimax score.
      *
      * @param Position $position The position to search from.
+     * @param int      $alpha    The alpha declaration.
+     * @param int      $beta     The beta declaration.
+     * @param int      $depth    The search depth.
      *
      * @return array|int|null Return an array of the best move and score possible.
      */
-    public function search(Position $position, int $depth): int
+    public function search(Position $position, int $alpha, int $beta, int $depth): int
     {
         if ($depth === 0 || $position->gameOver()) {
             return $evaluator->evaluate($position);
         }
-        $maxScore = 999999999;
+        $maxScore = 99999;
         $bestValue = $position->currentPlayer() === 1 ? $maxScore : -$maxScore;
         $avaliableMoves = $position->getMoves();
         if ($position->currentPlayer() === 1) {
             foreach ($avaliableMoves as $move) {
                 $position->move($move);
-                $bestValue = min($bestValue, $this->search($depth - 1, $position));
+                $bestValue = min($bestValue, $this->search($depth - 1, $alpha, $beta, $position));
                 $position->undo();
+                $beta = min($beta, $bestValue);
+                if ($beta <= $alpha) {
+                    return $bestValue;
+                }
             }
         } else {
             foreach ($avaliableMoves as $move) {
                 $position->move($move);
-                $bestValue = max($bestValue, $this->search($depth - 1, $position));
+                $bestValue = max($bestValue, $this->search($depth - 1, $alpha, $beta, $position));
                 $position->undo();
+                $alpha = max($alpha, $bestValue);
+                if ($beta <= $alpha) {
+                    return $bestValue;
+                }
             }
         }
         return $bestValue;
