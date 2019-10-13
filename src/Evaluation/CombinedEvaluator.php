@@ -20,7 +20,7 @@ final class CombinedEvaluator implements Evaluator
      */
     public function __construct(array $evaluators)
     {
-        $this->evaluators = array_map(function (EvaluationInterface $evaluator): EvaluationInterface {
+        $this->evaluators = \array_map(function (Evaluator $evaluator): Evaluator {
             return $evaluator;
         }, $evaluators);
     }
