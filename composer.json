@@ -1,0 +1,27 @@
+{
+    "name": "kooser/phoenix",
+    "description": "A 4 player chess engine.",
+    "homepage": "https://github.com/Kooser6/Phoenix/",
+    "keywords": [],
+    "license": "proprietary",
+    "require": {
+        "php": ">=7.3",
+        "league/climate": "^3.5"
+    },
+    "require-dev": {
+        "vimeo/psalm": "^3",
+        "phpunit/phpunit": "^8.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Phoenix\\": "./src"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "config": {
+        "optimize-autoloader": true
+    },
+    "prefer-stable": true
+}
