@@ -66,7 +66,7 @@ final class Minimax implements Algorithm
     {
         $maxScore = 99999;
         $bestValue = $position->currentPlayer() === 1 ? $maxScore : -$maxScore;
-        $bestMove = null;
+        $bestMove = \null;
         $avaliableMoves = $position->getMoves();
         foreach ($avaliableMoves as $move) {
             $position->move($move);
@@ -101,9 +101,9 @@ final class Minimax implements Algorithm
         if ($position->currentPlayer() === 1) {
             foreach ($avaliableMoves as $move) {
                 $position->move($move);
-                $bestValue = min($bestValue, $this->search($depth - 1, $alpha, $beta, $position));
+                $bestValue = \min($bestValue, $this->search($depth - 1, $alpha, $beta, $position));
                 $position->undo();
-                $beta = min($beta, $bestValue);
+                $beta = \min($beta, $bestValue);
                 if ($beta <= $alpha) {
                     return $bestValue;
                 }
@@ -111,9 +111,9 @@ final class Minimax implements Algorithm
         } else {
             foreach ($avaliableMoves as $move) {
                 $position->move($move);
-                $bestValue = max($bestValue, $this->search($depth - 1, $alpha, $beta, $position));
+                $bestValue = \max($bestValue, $this->search($depth - 1, $alpha, $beta, $position));
                 $position->undo();
-                $alpha = max($alpha, $bestValue);
+                $alpha = \max($alpha, $bestValue);
                 if ($beta <= $alpha) {
                     return $bestValue;
                 }
