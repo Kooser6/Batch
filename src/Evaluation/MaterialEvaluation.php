@@ -5,6 +5,9 @@ namespace Phoenix\Evaluation;
 use Phoenix\Batch\Evaluator;
 use Phoenix\Batch\Position;
 
+use Phoenix\Game\Game;
+use Phoenix\Game\Utils;
+
 /**
  * The material evaluation.
  */
