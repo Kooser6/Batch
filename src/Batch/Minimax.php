@@ -82,13 +82,13 @@ final class Minimax implements Algorithm
     public function bestMove(Position $position): ?array
     {
         $maxScore = PHP_INT_MAX;
-        $bestValue = $position->currentPlayer === 1 ? $maxScore : -$maxScore;
+        $bestValue = $position->currentPlayer() === 1 ? $maxScore : -$maxScore;
         $bestMove = null;
         $avaliableMoves = $position->getMoves();
         foreach ($avaliableMoves as $move) {
             $position->move($move);
             $newValue = $this->search($position, $this->depth - 1);
-            if ($position->currentPlayer === 1 ? $newValue < $bestValue : $newValue > $bestValue) {
+            if ($position->currentPlayer() === 1 ? $newValue < $bestValue : $newValue > $bestValue) {
                 $bestMove = $move;
                 $bestValue = $newValue;
             }
@@ -110,9 +110,9 @@ final class Minimax implements Algorithm
             return $evaluator->evaluate($position);
         }
         $maxScore = PHP_INT_MAX;
-        $bestValue = $position->currentPlayer === 1 ? $maxScore : -$maxScore;
+        $bestValue = $position->currentPlayer() === 1 ? $maxScore : -$maxScore;
         $avaliableMoves = $position->getMoves();
-        if ($position->currentPlayer === 1) {
+        if ($position->currentPlayer() === 1) {
             foreach ($avaliableMoves as $move) {
                 $position->move($move);
                 $bestValue = min($bestValue, $this->search($depth - 1, $position));
