@@ -23,6 +23,16 @@ final class Board implements Position
     }
 
     /**
+     * Get the export data.
+     *
+     * @return array Returns the export data.
+     */
+    public function getExportData(): array
+    {
+        return $this->exportData;
+    }
+
+    /**
      * Get the current player or team.
      *
      * @return int Returns the current player.
