@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<psalm name="Phoenix Zero 4 Player Chess Psalm Configuration" useDocblockTypes="true">
+    <projectFiles>
+        <directory name="./src" />
+    </projectFiles>
+</psalm>
